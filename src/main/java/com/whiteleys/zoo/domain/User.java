@@ -1,10 +1,16 @@
 package com.whiteleys.zoo.domain;
 
 import static javax.persistence.GenerationType.IDENTITY;
-import javax.persistence.*;
 
-import java.util.Date;
 import java.io.Serializable;
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  * A registered user of the system. 
@@ -21,7 +27,7 @@ public class User implements Serializable {
     private transient Integer dobYear;
     private Date dateOfBirth;
     private String postcode;
-    private transient com.whiteleys.zoo.domain.Sex sex;
+    private Sex sex;
 
 
     public Integer getDobDay() {
@@ -93,8 +99,8 @@ public class User implements Serializable {
     /**
      * @return the user's sex
      */
-    //@Column(name="sex", nullable = false, length = 1)
-    public com.whiteleys.zoo.domain.Sex getSex() {
+    @Column(name="sex", nullable = false, length = 1)
+    public Sex getSex() {
         return sex;
     }
 
