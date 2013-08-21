@@ -5,11 +5,13 @@ import com.whiteleys.zoo.domain.Sex;
 import com.whiteleys.zoo.domain.User;
 import com.whiteleys.zoo.service.UserService;
 import com.whiteleys.zoo.web.Globals;
+
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindException;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -20,6 +22,8 @@ import org.springframework.web.servlet.mvc.SimpleFormController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+
 import java.util.Map;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -37,11 +41,21 @@ public class UserRegistrationController {
 
 
     @RequestMapping(method = RequestMethod.POST)
-    public String submitForm(HttpServletRequest request,@ModelAttribute("userCommand") User command) throws Exception {
+    public String submitForm(HttpServletRequest request,@ModelAttribute("userCommand") @Valid User command, BindingResult result) throws Exception {
+    	
+    	if( result.hasErrors()) {
+    		
+    		/*request.getSession().setAttribute("dobDays", Globals.DAYS_OF_MONTH);
+    		request.getSession().setAttribute("dobMonths", Globals.MONTHS_OF_YEAR);
+    		request.getSession().setAttribute("dobYears", Globals.birthYears());
+    		*/
+    		return "register";
+    	}
 
-        //Create the date of birth from the command
+    	//Create the date of birth from the command
         Calendar cal = new GregorianCalendar();
         cal.set(command.getDobYear(), command.getDobMonth(), command.getDobDay(), 0, 0, 0);
+
 
         User user = userService.register(command.getUsername(), command.getPassword(), command.getSex(),
                 cal.getTime(), command.getPostcode());

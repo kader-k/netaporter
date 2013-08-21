@@ -11,6 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Pattern;
+
 
 /**
  * A registered user of the system. 
@@ -19,6 +21,7 @@ import javax.persistence.TemporalType;
 public class User implements Serializable {
 
     private Long userId;
+    @Pattern(regexp = "\\w+")
     private String username;
     private String password;
     private transient String password2;
