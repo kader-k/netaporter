@@ -45,10 +45,10 @@ public class UserRegistrationController {
     	
     	if( result.hasErrors()) {
     		
-    		/*request.getSession().setAttribute("dobDays", Globals.DAYS_OF_MONTH);
+    		request.getSession().setAttribute("dobDays", Globals.DAYS_OF_MONTH);
     		request.getSession().setAttribute("dobMonths", Globals.MONTHS_OF_YEAR);
     		request.getSession().setAttribute("dobYears", Globals.birthYears());
-    		*/
+    		
     		return "register";
     	}
 

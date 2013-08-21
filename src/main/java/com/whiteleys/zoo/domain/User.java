@@ -11,7 +11,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 
 /**
@@ -21,15 +26,20 @@ import javax.validation.constraints.Pattern;
 public class User implements Serializable {
 
     private Long userId;
-    @Pattern(regexp = "\\w+")
+    @Pattern(regexp = "\\w+", message="username must have letters and/or numbers")
     private String username;
+    @Pattern(regexp = "\\w+", message="password must have letters and/or numbers")
     private String password;
-    private transient String password2;
+    @Pattern(regexp = "\\w+", message="password must have letters and/or numbers")
+    private transient String password2; //TODO: password must match
     private transient Integer dobDay;
     private transient Integer dobMonth;
     private transient Integer dobYear;
+    @Past
     private Date dateOfBirth;
+    @Pattern(regexp="[a-zA-Z0-9]+?[\\s]*?[a-zA-Z0-9]+?\\s*", message="postcode must have letters and numbers")
     private String postcode;
+    @NotNull(message = "please select a gender")
     private Sex sex;
 
 
