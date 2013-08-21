@@ -5,6 +5,7 @@ import com.whiteleys.zoo.domain.Sex;
 import com.whiteleys.zoo.domain.User;
 import com.whiteleys.zoo.service.UserService;
 import com.whiteleys.zoo.web.Globals;
+import com.whiteleys.zoo.web.validator.UserValidator;
 
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,11 +38,13 @@ import java.util.Calendar;
 public class UserRegistrationController {
 
     private UserService userService;
-
+    private UserValidator userValidator;
 
 
     @RequestMapping(method = RequestMethod.POST)
     public String submitForm(HttpServletRequest request,@ModelAttribute("userCommand") @Valid User command, BindingResult result) throws Exception {
+    	
+    	userValidator.validate(command, result);
     	
     	if( result.hasErrors()) {
     		
@@ -81,6 +84,17 @@ public class UserRegistrationController {
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
+
+
+	public UserValidator getUserValidator() {
+		return userValidator;
+	}
+
+
+	@Autowired
+	public void setUserValidator(UserValidator userValidator) {
+		this.userValidator = userValidator;
+	}
 
    
 

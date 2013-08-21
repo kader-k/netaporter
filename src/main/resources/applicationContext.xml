@@ -54,7 +54,8 @@
     <!-- services  -->
     <bean id="animalService" class="com.whiteleys.zoo.service.support.AnimalServiceImpl"/>
     <bean id="userService" class="com.whiteleys.zoo.service.support.UserServiceImpl"/>
-
+	<bean id="userValidator" class="com.whiteleys.zoo.web.validator.UserValidator" />
+    
     <!-- servlet filters (must be in the root application context - hence in this file) -->
     <bean id="securityFilter" class="com.whiteleys.zoo.web.filter.SecurityFilter">
         <property name="exemptUrls">

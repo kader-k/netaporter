@@ -37,9 +37,9 @@ public class User implements Serializable {
     private transient Integer dobYear;
     @Past
     private Date dateOfBirth;
-    @Pattern(regexp="[a-zA-Z0-9]+?[\\s]*?[a-zA-Z0-9]+?\\s*", message="postcode must have letters and numbers")
+    @NotNull(message = "Please enter a valid postcode")
     private String postcode;
-    @NotNull(message = "please select a gender")
+    @NotNull(message = "Please select a gender")
     private Sex sex;
 
 
@@ -66,9 +66,6 @@ public class User implements Serializable {
     public void setDobYear(Integer dobYear) {
         this.dobYear = dobYear;
     }
-
-
-
 
     // Default Constructor
     public User() {
@@ -124,7 +121,6 @@ public class User implements Serializable {
     public String getPostcode() {
         return postcode;
     }
-
 
 
     // Setters
