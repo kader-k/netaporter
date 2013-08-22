@@ -1,5 +1,7 @@
 package com.whiteleys.zoo.web.validator;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -14,6 +16,30 @@ public class UserValidator implements Validator {
 
 	private UserDao userDao;
 
+	
+	/** make sure the date is in bounds of months e.g. 30 Feb is invalid
+	 * 
+	 * @return
+	 */
+	private boolean isDateValid(Integer year, Integer month, Integer day) {
+ 
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		sdf.setLenient(false);
+ 
+		try {
+ 
+			//if not valid, it will throw ParseException
+			sdf.parse(year.toString() + month.toString() + day.toString());
+ 
+		} catch (ParseException e) {
+ 
+			return false;
+		}
+ 
+		return true;
+	}
+	
+	
 	@Override
 	public boolean supports(Class<?> clazz) {
 		return User.class.equals(clazz);
@@ -35,6 +61,9 @@ public class UserValidator implements Validator {
 			errors.reject("postcode", "invalid postcode");
 		}
 		
+		if(!isDateValid(user.getDobYear(), user.getDobMonth(), user.getDobDay())) {
+			errors.reject("invalidDOB", "Invalid date of birth");
+		}
 		
     	//Create the date of birth from the command
         Calendar cal = new GregorianCalendar();
@@ -43,7 +72,6 @@ public class UserValidator implements Validator {
         	errors.reject("dobInFuture", "Date of birth can't be a future date");
         }
 	}
-
 	
 	/** Potentially calling web service/api to validated real postcode
 	 * 
