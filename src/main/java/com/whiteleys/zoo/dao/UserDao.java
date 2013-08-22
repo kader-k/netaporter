@@ -32,4 +32,6 @@ public interface UserDao {
      * @return true if a user with this username already exists, otherwise false
      */
     boolean exists(String username);
+
+	void update(User user);
 }

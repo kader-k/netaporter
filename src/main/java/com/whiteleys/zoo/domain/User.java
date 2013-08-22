@@ -3,11 +3,14 @@ package com.whiteleys.zoo.domain;
 import static javax.persistence.GenerationType.IDENTITY;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -43,7 +46,7 @@ public class User implements Serializable {
     @NotNull(message = "Please select a gender")
     private Sex sex;
 
-    private Set<Animal> favourites;
+    private List<Animal> favourites;
     
 
     public Integer getDobDay() {
@@ -72,6 +75,7 @@ public class User implements Serializable {
 
     // Default Constructor
     public User() {
+    	this.favourites = new ArrayList<Animal>();
 
     }
 
@@ -159,13 +163,13 @@ public class User implements Serializable {
         this.password2 = password2;
     }
 
-    @OneToMany
+    @OneToMany(fetch =FetchType.EAGER)
     @JoinTable(joinColumns=@JoinColumn(name="id"), inverseJoinColumns=@JoinColumn(name="userId"))
-	public Set<Animal> getFavourites() {
+	public List<Animal> getFavourites() {
 		return favourites;
 	}
 
-	public void setFavourites(Set<Animal> favourites) {
+	public void setFavourites(List<Animal> favourites) {
 		this.favourites = favourites;
 	}
 }

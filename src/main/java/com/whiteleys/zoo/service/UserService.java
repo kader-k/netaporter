@@ -52,4 +52,9 @@ public interface UserService {
      * @return true if a user with this username already exists, otherwise false
      */
     boolean exists(String username);
+
+	void saveUser(User user);
+
+	void updateUser(User user);
+	
 }

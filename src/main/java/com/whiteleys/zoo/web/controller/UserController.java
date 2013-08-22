@@ -1,17 +1,20 @@
 package com.whiteleys.zoo.web.controller;
 
-import com.whiteleys.zoo.domain.Animal;
-import com.whiteleys.zoo.service.AnimalService;
-import com.whiteleys.zoo.web.Tiles;
+import java.util.Collections;
+import java.util.List;
+
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.Controller;
 
-import javax.servlet.http.HttpSession;
-import java.util.List;
-import java.util.Collections;
+import com.whiteleys.zoo.domain.Animal;
+import com.whiteleys.zoo.domain.User;
+import com.whiteleys.zoo.service.AnimalService;
+import com.whiteleys.zoo.service.UserService;
+import com.whiteleys.zoo.web.Tiles;
 
 /**
  * The controller that deals with all non-form processing requests that can be submitted by a user.
@@ -20,9 +23,10 @@ import java.util.Collections;
 public class UserController {
 
     private AnimalService animalService;
+    private UserService userService;
 
     /**
-     * Proceed to the home page that shows all a user's favorites.
+     * Proceed to the home page that shows all a user's favourites.
      *
      * @param session the http session
      * @return the model and view
@@ -30,11 +34,12 @@ public class UserController {
     @RequestMapping("/home.html")
     public ModelAndView home(HttpSession session) {
 
+    	User user = (User) session.getAttribute("user");
+     
         // TODO Get the favourites for the logged-in user
-        List<Animal> favourites = Collections.EMPTY_LIST;
+        List<Animal> favourites = this.userService.getUser(user.getUsername(), user.getPassword()).getFavourites();
 
-        return new ModelAndView(Tiles.HOME)
-                .addObject("favourites", favourites);
+        return new ModelAndView(Tiles.HOME).addObject("favourites", favourites);
     }
 
     /**
@@ -49,6 +54,8 @@ public class UserController {
         return new ModelAndView("redirect:/login.html");     // return to the login page
     }
 
+    
+    
     /**
      * View the gallery of all available images.
      *
@@ -61,8 +68,9 @@ public class UserController {
         // retrieve a list of all the image files that are available
         List<Animal> allAnimals = animalService.getAllAnimals();
 
-        // TODO populate list of the user's favourite animals
-        List<Animal> favouriteAnimals = Collections.EMPTY_LIST;
+        User user = this.getUserFRomDB(session);
+        
+        List<Animal> favouriteAnimals = user.getFavourites();
 
         return new ModelAndView(Tiles.GALLERY)
                 .addObject("favourites", favouriteAnimals)
@@ -79,8 +87,15 @@ public class UserController {
     @RequestMapping("/addFavourite.html")
     public ModelAndView addFavourite(HttpSession session, @RequestParam Long animalId) {
 
-        // TODO - add favourite
-
+    	User user = getUserFRomDB(session);
+    
+    	Animal animal = this.animalService.getAnimal(animalId);
+    	if(animal != null) {
+    		user.getFavourites().add(animal);
+    	}
+    	
+    	this.userService.updateUser(user);   	
+    	
         return new ModelAndView("redirect:/gallery.html");
     }
 
@@ -99,17 +114,31 @@ public class UserController {
             @RequestParam Long animalId,
             @RequestParam(required = false) Boolean gallery) {
 
+        User user = getUserFRomDB(session);
+    	user.getFavourites().remove(this.animalService.getAnimal(animalId));
+    	
+        this.userService.updateUser(user);
+        
         boolean redirectToGallery = (gallery != null && gallery);
-
-        // TODO Remove favourite
-
         return new ModelAndView(
                 redirectToGallery ? "redirect:/gallery.html" : "redirect:/home.html");
     }
+
+	private User getUserFRomDB(HttpSession session) {
+		User sessionUser = (User)session.getAttribute("user");
+    	User user = this.userService.getUser(sessionUser.getUsername(), sessionUser.getPassword());
+		return user;
+	}
 
     @Autowired
     public void setAnimalsService(AnimalService animalService) {
         this.animalService = animalService;
     }
 
+	@Autowired
+	public void setUserService(UserService userService) {
+		this.userService = userService;
+	}
+
+    
 }

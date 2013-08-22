@@ -19,4 +19,8 @@ public interface AnimalService {
      * @return all the animals available
      */
     List<Animal> getAllAnimals();
+
+	Animal getAnimal(Long animalId);
+
+	void deleteAnimal(Long userId, Long animalId);
 }

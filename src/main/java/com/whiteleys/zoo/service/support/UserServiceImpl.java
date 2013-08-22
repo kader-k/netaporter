@@ -1,14 +1,14 @@
 package com.whiteleys.zoo.service.support;
 
-import org.springframework.stereotype.Component;
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.joda.time.LocalDate;
-import com.whiteleys.zoo.service.UserService;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.whiteleys.zoo.dao.UserDao;
 import com.whiteleys.zoo.domain.Sex;
 import com.whiteleys.zoo.domain.User;
-import com.whiteleys.zoo.dao.UserDao;
-
-import java.util.Date;
+import com.whiteleys.zoo.service.UserService;
 
 /**
  * The default implementation of the {@link com.whiteleys.zoo.service.UserService UserService}.
@@ -65,4 +65,15 @@ public class UserServiceImpl implements UserService {
     public void setUserDao(UserDao userDao) {
         this.userDao = userDao;
     }
+
+	@Override
+	public void saveUser(User user) {
+		this.userDao.save(user);
+	}
+
+	@Override
+	public void updateUser(User user) {
+		this.userDao.update(user);
+		
+	}
 }
