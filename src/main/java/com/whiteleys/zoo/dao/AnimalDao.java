@@ -14,6 +14,4 @@ public interface AnimalDao {
     List<Animal> findAll();
 
 	Animal getAnimal(Long animalId);
-
-	void deleteAnimal(Long userId, Long animalId);
 }

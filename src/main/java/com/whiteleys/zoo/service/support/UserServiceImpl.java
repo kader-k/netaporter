@@ -3,7 +3,6 @@ package com.whiteleys.zoo.service.support;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.whiteleys.zoo.dao.UserDao;
 import com.whiteleys.zoo.domain.Animal;

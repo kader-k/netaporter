@@ -13,12 +13,6 @@ public class HibernateAnimalDao extends HibernateDaoSupport implements AnimalDao
     public List<Animal> findAll() {
         return getHibernateTemplate().loadAll(Animal.class);
     }
-
-	@Override
-	public void deleteAnimal(Long userId, Long animalId) {
-		this.getHibernateTemplate().delete("delete FROM UserAnimal WHERE id= ? AND userId = ?", new Object[]{animalId, userId});
-	}
-	
 	
 	@Override
 	public Animal getAnimal(Long animalId) {

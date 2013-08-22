@@ -1,23 +1,17 @@
 package com.whiteleys.zoo.web.controller;
 
-import com.whiteleys.zoo.domain.User;
-import com.whiteleys.zoo.service.UserService;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
-import org.springframework.validation.BindException;
-import org.springframework.validation.Errors;
-import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.SimpleFormController;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.Map;
+import com.whiteleys.zoo.domain.User;
+import com.whiteleys.zoo.service.UserService;
 
 /**
  * A form controller for handling the login form.
@@ -49,6 +43,4 @@ public class LoginController {
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
-
-
 }

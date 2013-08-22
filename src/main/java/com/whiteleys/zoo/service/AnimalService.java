@@ -21,6 +21,4 @@ public interface AnimalService {
     List<Animal> getAllAnimals();
 
 	Animal getAnimal(Long animalId);
-
-	void deleteAnimal(Long userId, Long animalId);
 }

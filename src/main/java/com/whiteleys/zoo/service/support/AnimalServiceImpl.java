@@ -12,12 +12,6 @@ import com.whiteleys.zoo.service.AnimalService;
 public class AnimalServiceImpl implements AnimalService {
 
     private AnimalDao animalDao;
-
-    @Override
-    public void deleteAnimal(Long userId, Long animalId) {
-    	this.animalDao.deleteAnimal(userId, animalId);
-    }
-    
     
     @Override
     public List<Animal> getAllAnimals() {
