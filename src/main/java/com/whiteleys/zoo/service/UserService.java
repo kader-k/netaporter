@@ -1,10 +1,10 @@
 package com.whiteleys.zoo.service;
 
+import java.util.Date;
+
+import com.whiteleys.zoo.domain.Animal;
 import com.whiteleys.zoo.domain.Sex;
 import com.whiteleys.zoo.domain.User;
-import org.joda.time.LocalDate;
-
-import java.util.Date;
 
 /**
  * A service for administering {@link com.whiteleys.zoo.domain.User users}.
@@ -56,5 +56,9 @@ public interface UserService {
 	void saveUser(User user);
 
 	void updateUser(User user);
+	
+	void removeFavourite(String username, String password, Animal animal);
+	
+	void addFavourite(String username, String password, Animal animal);
 	
 }

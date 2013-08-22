@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.whiteleys.zoo.dao.UserDao;
+import com.whiteleys.zoo.domain.Animal;
 import com.whiteleys.zoo.domain.Sex;
 import com.whiteleys.zoo.domain.User;
 import com.whiteleys.zoo.service.UserService;
@@ -75,5 +76,24 @@ public class UserServiceImpl implements UserService {
 	public void updateUser(User user) {
 		this.userDao.update(user);
 		
+	}
+
+	@Override
+	public void removeFavourite(String username, String password, Animal animal) {
+		User user = this.getUser(username, password);
+		user.getFavourites().remove(animal);
+    	
+        this.updateUser(user);
+	}
+
+	@Override
+	public void addFavourite(String username, String password, Animal animal) {
+		
+		if(animal != null) {
+			User user = this.getUser(username, password);
+			user.getFavourites().add(animal);
+	    	
+	        this.updateUser(user);
+    	}
 	}
 }

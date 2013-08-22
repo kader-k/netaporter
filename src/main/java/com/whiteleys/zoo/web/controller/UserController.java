@@ -1,6 +1,5 @@
 package com.whiteleys.zoo.web.controller;
 
-import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -36,7 +35,7 @@ public class UserController {
 
     	User user = (User) session.getAttribute("user");
      
-        // TODO Get the favourites for the logged-in user
+        // Get the favourites for the logged-in user
         List<Animal> favourites = this.userService.getUser(user.getUsername(), user.getPassword()).getFavourites();
 
         return new ModelAndView(Tiles.HOME).addObject("favourites", favourites);
@@ -54,8 +53,6 @@ public class UserController {
         return new ModelAndView("redirect:/login.html");     // return to the login page
     }
 
-    
-    
     /**
      * View the gallery of all available images.
      *
@@ -64,12 +61,11 @@ public class UserController {
      */
     @RequestMapping("/gallery.html")
     public ModelAndView gallery(HttpSession session) {
+    	
+    	User user = this.getUserFromDB(session);
 
         // retrieve a list of all the image files that are available
         List<Animal> allAnimals = animalService.getAllAnimals();
-
-        User user = this.getUserFRomDB(session);
-        
         List<Animal> favouriteAnimals = user.getFavourites();
 
         return new ModelAndView(Tiles.GALLERY)
@@ -87,14 +83,9 @@ public class UserController {
     @RequestMapping("/addFavourite.html")
     public ModelAndView addFavourite(HttpSession session, @RequestParam Long animalId) {
 
-    	User user = getUserFRomDB(session);
+    	User user = (User)session.getAttribute("user");
     
-    	Animal animal = this.animalService.getAnimal(animalId);
-    	if(animal != null) {
-    		user.getFavourites().add(animal);
-    	}
-    	
-    	this.userService.updateUser(user);   	
+    	this.userService.addFavourite(user.getUsername(), user.getPassword(), this.animalService.getAnimal(animalId));
     	
         return new ModelAndView("redirect:/gallery.html");
     }
@@ -114,17 +105,16 @@ public class UserController {
             @RequestParam Long animalId,
             @RequestParam(required = false) Boolean gallery) {
 
-        User user = getUserFRomDB(session);
-    	user.getFavourites().remove(this.animalService.getAnimal(animalId));
+        User user = (User)session.getAttribute("user");
     	
-        this.userService.updateUser(user);
+        this.userService.removeFavourite(user.getUsername(), user.getPassword(), this.animalService.getAnimal(animalId));
         
         boolean redirectToGallery = (gallery != null && gallery);
         return new ModelAndView(
                 redirectToGallery ? "redirect:/gallery.html" : "redirect:/home.html");
     }
 
-	private User getUserFRomDB(HttpSession session) {
+	private User getUserFromDB(HttpSession session) {
 		User sessionUser = (User)session.getAttribute("user");
     	User user = this.userService.getUser(sessionUser.getUsername(), sessionUser.getPassword());
 		return user;
@@ -139,6 +129,4 @@ public class UserController {
 	public void setUserService(UserService userService) {
 		this.userService = userService;
 	}
-
-    
 }
