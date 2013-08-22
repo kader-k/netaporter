@@ -4,19 +4,20 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 
 
 /**
@@ -31,7 +32,7 @@ public class User implements Serializable {
     @Pattern(regexp = "\\w+", message="password must have letters and/or numbers")
     private String password;
     @Pattern(regexp = "\\w+", message="password must have letters and/or numbers")
-    private transient String password2; //TODO: password must match
+    private transient String password2;
     private transient Integer dobDay;
     private transient Integer dobMonth;
     private transient Integer dobYear;
@@ -42,6 +43,8 @@ public class User implements Serializable {
     @NotNull(message = "Please select a gender")
     private Sex sex;
 
+    private Set<Animal> favourites;
+    
 
     public Integer getDobDay() {
         return dobDay;
@@ -155,4 +158,14 @@ public class User implements Serializable {
     public void setPassword2(String password2) {
         this.password2 = password2;
     }
+
+    @OneToMany
+    @JoinTable(joinColumns=@JoinColumn(name="id"), inverseJoinColumns=@JoinColumn(name="userId"))
+	public Set<Animal> getFavourites() {
+		return favourites;
+	}
+
+	public void setFavourites(Set<Animal> favourites) {
+		this.favourites = favourites;
+	}
 }
