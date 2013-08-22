@@ -10,7 +10,7 @@
            </description>
        </bean>
 
-       <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"/>   
+       <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"/>
 
     <!--<bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
         <property name="mappings">
