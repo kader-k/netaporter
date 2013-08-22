@@ -14,7 +14,6 @@ public class UserValidator implements Validator {
 
 	private UserDao userDao;
 
-
 	@Override
 	public boolean supports(Class<?> clazz) {
 		return User.class.equals(clazz);
@@ -37,15 +36,12 @@ public class UserValidator implements Validator {
 		}
 		
 		
-		
     	//Create the date of birth from the command
         Calendar cal = new GregorianCalendar();
         cal.set(user.getDobYear(), user.getDobMonth(), user.getDobDay(), 0, 0, 0);
         if(cal.getTimeInMillis() > new GregorianCalendar().getTimeInMillis()) {
         	errors.reject("dobInFuture", "Date of birth can't be a future date");
         }
-        
-
 	}
 
 	
@@ -56,10 +52,6 @@ public class UserValidator implements Validator {
 	 */
 	private boolean isPostcodeValid(String postcode) {
 		return Util.isPostcodeValid(postcode);
-	}
-
-	public UserDao getUserDao() {
-		return userDao;
 	}
 
 	@Autowired

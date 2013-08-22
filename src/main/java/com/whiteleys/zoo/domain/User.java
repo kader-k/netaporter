@@ -4,7 +4,6 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -30,11 +29,11 @@ import javax.validation.constraints.Pattern;
 public class User implements Serializable {
 
     private Long userId;
-    @Pattern(regexp = "\\w+", message="username must have letters and/or numbers")
+    @Pattern(regexp = "\\w+", message="Username must have letters and/or numbers")
     private String username;
-    @Pattern(regexp = "\\w+", message="password must have letters and/or numbers")
+    @Pattern(regexp = "\\w+", message="Password must have letters and/or numbers")
     private String password;
-    @Pattern(regexp = "\\w+", message="password must have letters and/or numbers")
+    @Pattern(regexp = "\\w+", message="Retyped password must have letters and/or numbers")
     private transient String password2;
     private transient Integer dobDay;
     private transient Integer dobMonth;
@@ -45,10 +44,8 @@ public class User implements Serializable {
     private String postcode;
     @NotNull(message = "Please select a gender")
     private Sex sex;
-
     private List<Animal> favourites;
     
-
     public Integer getDobDay() {
         return dobDay;
     }
@@ -163,7 +160,7 @@ public class User implements Serializable {
         this.password2 = password2;
     }
 
-    @OneToMany(fetch =FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinTable(joinColumns=@JoinColumn(name="id"), inverseJoinColumns=@JoinColumn(name="userId"))
 	public List<Animal> getFavourites() {
 		return favourites;

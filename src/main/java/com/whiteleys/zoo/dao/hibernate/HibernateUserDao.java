@@ -11,14 +11,15 @@ public class HibernateUserDao extends HibernateDaoSupport implements UserDao {
 
 	@Override
 	public void update(User user) {
-		this.getHibernateTemplate().update(user);
+		getHibernateTemplate().update(user);
     }
 	
 	@Override
     public void save(User user) {
-		this.getHibernateTemplate().save(user);
+		getHibernateTemplate().save(user);
     }
 
+	@SuppressWarnings("unchecked")
 	@Override
     public User find(String username, String password) {
         List<User> user = getHibernateTemplate().find("FROM User WHERE username = ? AND password = ?", new Object[] {username, password});

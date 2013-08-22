@@ -1,34 +1,23 @@
 package com.whiteleys.zoo.web.controller;
 
-import com.google.common.collect.ImmutableMap;
-import com.whiteleys.zoo.domain.Sex;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
 import com.whiteleys.zoo.domain.User;
 import com.whiteleys.zoo.service.UserService;
 import com.whiteleys.zoo.web.Globals;
 import com.whiteleys.zoo.web.validator.UserValidator;
-
-import org.joda.time.LocalDate;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
-import org.springframework.validation.BindException;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
-import org.springframework.validation.Validator;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.SimpleFormController;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-
-import java.util.Map;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Calendar;
 
 /**
  * A form controller for handling the user registration form.
@@ -40,14 +29,14 @@ public class UserRegistrationController {
     private UserService userService;
     private UserValidator userValidator;
 
-
     @RequestMapping(method = RequestMethod.POST)
     public String submitForm(HttpServletRequest request,@ModelAttribute("userCommand") @Valid User command, BindingResult result) throws Exception {
     	
     	userValidator.validate(command, result);
     	
-    	if( result.hasErrors()) {
+    	if(result.hasErrors()) {
     		
+    		// populate date dropdown list
     		request.getSession().setAttribute("dobDays", Globals.DAYS_OF_MONTH);
     		request.getSession().setAttribute("dobMonths", Globals.MONTHS_OF_YEAR);
     		request.getSession().setAttribute("dobYears", Globals.birthYears());
@@ -59,17 +48,14 @@ public class UserRegistrationController {
         Calendar cal = new GregorianCalendar();
         cal.set(command.getDobYear(), command.getDobMonth(), command.getDobDay(), 0, 0, 0);
 
-
         User user = userService.register(command.getUsername(), command.getPassword(), command.getSex(),
                 cal.getTime(), command.getPostcode());
-        
 
         // put the user (who is now logged in) into the session
         request.getSession().setAttribute("user", user);
 
         return "redirect:/home.html";
     }
-
 
     @RequestMapping(method = RequestMethod.GET)
     public String setUpForm(Map model)  {
@@ -85,17 +71,8 @@ public class UserRegistrationController {
         this.userService = userService;
     }
 
-
-	public UserValidator getUserValidator() {
-		return userValidator;
-	}
-
-
 	@Autowired
 	public void setUserValidator(UserValidator userValidator) {
 		this.userValidator = userValidator;
 	}
-
-   
-
 }

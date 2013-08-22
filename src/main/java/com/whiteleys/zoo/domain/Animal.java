@@ -74,11 +74,4 @@ public class Animal implements Serializable {
 		
 		return id.equals(other.id);
 	}
-
-	@Override
-	public String toString() {
-		return "Animal [id=" + id + ", name=" + name + "]";
-	}
-
-
 }

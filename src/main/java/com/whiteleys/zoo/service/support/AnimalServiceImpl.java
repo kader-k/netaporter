@@ -27,5 +27,4 @@ public class AnimalServiceImpl implements AnimalService {
     public void setAnimalDao(AnimalDao animalDao) {
         this.animalDao = animalDao;
     }
-
 }

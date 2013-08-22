@@ -60,5 +60,4 @@ public interface UserService {
 	void removeFavourite(String username, String password, Animal animal);
 	
 	void addFavourite(String username, String password, Animal animal);
-	
 }
