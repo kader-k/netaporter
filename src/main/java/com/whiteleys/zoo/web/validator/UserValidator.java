@@ -1,5 +1,6 @@
 package com.whiteleys.zoo.web.validator;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -23,13 +24,13 @@ public class UserValidator implements Validator {
 	 */
 	private boolean isDateValid(Integer year, Integer month, Integer day) {
  
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-		sdf.setLenient(false);
+		DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		sdf.setLenient(true);
  
 		try {
  
 			//if not valid, it will throw ParseException
-			sdf.parse(year.toString() + month.toString() + day.toString());
+			sdf.parse(year.toString() + "-" + month.toString() + "-" +  day.toString());
  
 		} catch (ParseException e) {
  
